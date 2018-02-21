@@ -20,9 +20,6 @@
 #include <windows.h>
 #include <mmsystem.h>
 
-// Common
-#include "AssertMsg.h"
-
 // Project
 #include "seismix.h"
 
@@ -36,13 +33,14 @@ using namespace seismix;
 
 MCIDEVICEID wDeviceID = 0;
 
-IMPLEMENT_LUAMETHOD(seismix, play) {
-	ASSERT(lua_isstring(L, -3) && lua_isnumber(L, -2) && lua_isnumber(L, -1));
-	auto file = lua_tostring(L, -3);
-	auto from = (DWORD)lua_tointeger(L, -2);
-	auto to = (DWORD)lua_tointeger(L, -1);
-	MCIERROR err = 0;
+//-----------------------------------------------------------------------------
 
+IMPLEMENT_LUAMETHOD(seismix, play) {
+	auto file = luaL_checkstring(L, 1);
+	auto from = (DWORD)luaL_checkinteger(L, 2);
+	auto to = (DWORD)luaL_checkinteger(L, 3);
+
+	MCIERROR err = 0;
 	MCI_WAVE_OPEN_PARMSA mci1;
 	mci1.dwCallback = 0;
 	mci1.wDeviceID = 0;
@@ -70,16 +68,16 @@ IMPLEMENT_LUAMETHOD(seismix, play) {
 }
 
 IMPLEMENT_LUAMETHOD(seismix, send) {
-	ASSERT(lua_isstring(L, -1));
-	auto str = lua_tostring(L, -1);
+	auto str = luaL_checkstring(L, 1);
+
 	MCIERROR err = mciSendStringA(str, 0, 0, 0);
 	lua_pushnumber(L, err);
 	return 1;
 }
 
 IMPLEMENT_LUAMETHOD(seismix, pause) {
-	ASSERT(lua_isnumber(L, -1));
-	auto pause = (DWORD)lua_tointeger(L, -1);
+	auto pause = (DWORD)luaL_checkinteger(L, 1);
+
 	Sleep(pause);
 	return 0;
 }
@@ -104,12 +102,12 @@ int __cdecl main(int argc, char* argv[]) {
 	// Set current directory to executable location
 #ifndef _DEBUG
 	{
-		TCHAR mpath[_MAX_PATH];
-		TCHAR drive[_MAX_DRIVE];
-		TCHAR dir[_MAX_DIR];
+		WCHAR mpath[_MAX_PATH];
+		WCHAR drive[_MAX_DRIVE];
+		WCHAR dir[_MAX_DIR];
 		GetModuleFileName(nullptr, mpath, _countof(mpath));
-		_tsplitpath_s(mpath, drive, _countof(drive), dir, _countof(dir), nullptr, 0, nullptr, 0);
-		SetCurrentDirectory((std::tstring(drive) + dir).c_str());
+		_wsplitpath_s(mpath, drive, _countof(drive), dir, _countof(dir), nullptr, 0, nullptr, 0);
+		SetCurrentDirectoryW((std::wstring(drive) + dir).c_str());
 	}
 #endif
 
@@ -161,7 +159,7 @@ int __cdecl main(int argc, char* argv[]) {
 		retval = EXIT_FAILURE;
 	}
 	else {
-		ASSERT(lua_gettop(L) == 0); // Lua stack must be empty
+		_ASSERT(lua_gettop(L) == 0); // Lua stack must be empty
 
 		// Call Lua event
 		lua_getglobal(L, "main");

@@ -97,7 +97,7 @@ static std::set<std::string> sPlayset;
 static size_t nMaxIdLength = 5;
 
 // Lua virtual machine
-static lua_State* g_luaVM = 0;
+static lua_State* g_luaVM = nullptr;
 std::set<MCIDEVICEID> wDeviceID;
 bool pause = false;
 
@@ -670,14 +670,14 @@ static INT_PTR CALLBACK DialogProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARA
 			case IDC_SHOWPATH:
 				{
 					bShowPath = IsDlgButtonChecked(hwndDlg, IDC_SHOWPATH) == BST_CHECKED;
-					InvalidateRect(hwndFiles, 0, TRUE);
+					InvalidateRect(hwndFiles, nullptr, TRUE);
 					break;
 				}
 
 			case IDC_SHOWEXT:
 				{
 					bShowExt = IsDlgButtonChecked(hwndDlg, IDC_SHOWEXT) == BST_CHECKED;
-					InvalidateRect(hwndFiles, 0, TRUE);
+					InvalidateRect(hwndFiles, nullptr, TRUE);
 					break;
 				}
 
