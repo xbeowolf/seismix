@@ -1,0 +1,13 @@
+// Microsoft Visual C++ generated Help ID include file.
+// Used by smeditor.rc
+//
+#define HIDC_DELETE                     0x80640077    // IDD_SMGUI
+#define HIDC_FILES                      0x80640072    // IDD_SMGUI
+#define HIDC_OPEN                       0x80640073    // IDD_SMGUI
+#define HIDC_PLAY                       0x8064006f    // IDD_SMGUI
+#define HIDC_PLAYLIST                   0x8064006e    // IDD_SMGUI
+#define HIDC_SAVE                       0x80640074    // IDD_SMGUI
+#define HIDC_SHOWEXT                    0x80640076    // IDD_SMGUI
+#define HIDC_SHOWPATH                   0x80640075    // IDD_SMGUI
+#define HIDC_SKIPERR                    0x806403f5    // IDD_SMGUI
+#define HIDC_STOP                       0x80640070    // IDD_SMGUI
